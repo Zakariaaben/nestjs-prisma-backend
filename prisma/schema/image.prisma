@@ -1,0 +1,11 @@
+model Image {
+    id Int @id @default(autoincrement())
+    url String @unique
+    name String
+    project Project? @relation(fields: [project_id], references: [id])
+    project_id Int?
+
+    createdAt DateTime ? @default(now()) @map("created_at")
+
+    @@map("image")
+}
