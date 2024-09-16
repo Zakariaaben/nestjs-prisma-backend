@@ -1,5 +1,3 @@
-import { Prisma } from '@prisma/client';
-import { CategoryService } from './category.service';
 import {
   Body,
   Controller,
@@ -10,9 +8,11 @@ import {
   Patch,
   Post,
   Query,
-  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { slugify } from 'src/common/utils/slugify';
+import { CategoryService } from './category.service';
 import { createCategoryDto } from './dtos/createCategory.dto';
 import { UpdateCategoryDto } from './dtos/updateCategory.dto';
 const slug = require('slug');
@@ -41,9 +41,9 @@ export class CategoryController {
     categoryCreateInput: createCategoryDto,
   ) {
     if (!categoryCreateInput.slug) {
-      categoryCreateInput.slug = slug(categoryCreateInput.name);
+      categoryCreateInput.slug = slugify(categoryCreateInput.name);
     } else {
-      categoryCreateInput.slug = slug(categoryCreateInput.slug);
+      categoryCreateInput.slug = slugify(categoryCreateInput.slug);
     }
     return this.categoryService.createCategory(
       categoryCreateInput as Prisma.CategoryCreateInput,
